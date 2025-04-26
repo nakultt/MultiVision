@@ -1,6 +1,6 @@
 # MultiVision
 
-MultiVision is a project aimed at [insert the purpose of your project here, e.g., "providing advanced computer vision solutions for various applications."]
+MultiVision is a project aimed at Computer Vision
 
 ## Features
 

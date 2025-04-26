@@ -11,7 +11,7 @@ MultiVision is a project aimed at Computer Vision
 
 To get started with MultiVision, clone the repository and install the required dependencies:
 
-##Contributing
+## Contributing
 
 Contributions are welcome! Please follow these steps:
 

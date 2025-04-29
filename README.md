@@ -4,7 +4,7 @@ MultiVision is a project aimed at Computer Vision
 
 ## Features
 
-- Detcts Objects
+- Detects Objects
 - Sends mail if specific object is detected (included with picture of specified object)
 
 ## Installation

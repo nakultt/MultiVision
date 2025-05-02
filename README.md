@@ -6,6 +6,7 @@ MultiVision is a project aimed at Computer Vision
 
 - Detects Objects
 - Sends mail if specific object is detected (included with picture of specified object)
+- Face Detection
 
 ## Installation
 

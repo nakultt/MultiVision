@@ -1,3 +1,4 @@
 .env
 dataset
 face_training.pkl
+__pycache__

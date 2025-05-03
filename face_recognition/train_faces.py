@@ -2,7 +2,7 @@ import os
 import face_recognition
 import pickle
 
-def train_model(dataset_dir='face_recognition/dataset', model_file='face_training.pkl'):
+def train_model(dataset_dir='face_recognition/dataset', model_file='face_recognition/face_training.pkl'):
     known_face_encodings = []
     known_face_names = []
     

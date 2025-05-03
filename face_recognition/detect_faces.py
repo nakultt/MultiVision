@@ -2,7 +2,7 @@ import face_recognition
 import pickle
 import cv2
 
-def load_model(model_file='face_training.pkl'):
+def load_model(model_file='face_recognition/face_training.pkl'):
     try:
         with open(model_file, 'rb') as f:
             data = pickle.load(f)

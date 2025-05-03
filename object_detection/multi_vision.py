@@ -1,9 +1,9 @@
 import cv2
 import time
 from ultralytics import YOLO
-from modules.email_utils import send_detection_email
+from mail.email_utils import send_detection_email
 
-def load_specified_objects(filepath="objects.txt"):
+def load_specified_objects(filepath="object_detection/objects.txt"):
     try:
         with open(filepath, "r") as f:
             result = set()
@@ -18,7 +18,7 @@ specified_objects = load_specified_objects()
 COOLDOWN = 180  # seconds
 last_sent = {}
 
-model = YOLO("yolo12l.pt")
+model = YOLO("object_detection/yolo12l.pt")
 
 def detect_obj(vid_src=0):
     vid = cv2.VideoCapture(vid_src)
@@ -62,5 +62,3 @@ def detect_obj(vid_src=0):
 
     vid.release()
     cv2.destroyAllWindows()
-
-detect_obj(0)

@@ -19,8 +19,12 @@ def send_detection_email(label, confidence, image=None):
         print("Email credentials are not set.")
         return
     
-    subject = f"Object Detected: {label}"
-    body = f"The object '{label}' was detected with confidence {confidence:.2f}."
+    if confidence is not None:
+        subject = f"Object Detected: {label}"
+        body = f"The object '{label}' was detected with confidence {confidence:.2f}."
+    else:
+        subject = f"Face Recognized: {label}"
+        body = f"The person '{label}' was recognized."
 
     msg = MIMEMultipart()
     msg["Subject"] = subject

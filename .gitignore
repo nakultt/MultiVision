@@ -1,4 +1,17 @@
+# Ignore environment variables
 .env
-dataset
-face_training.pkl
-__pycache__
+
+# Ignore face dataset and model
+face_detection/dataset/
+face_detection/face_training.pkl
+
+# Ignore Python cache
+__pycache__/
+
+# Ignore YOLO model weights
+object_detection/yolo12n.pt
+object_detection/yolo12l.pt
+object_detection/yolo12m.pt
+
+# Ignore all .pyc files
+*.pyc

@@ -19,6 +19,31 @@ def load_model(model_file='face_detection/face_training.pkl'):
         print(f"Error loading model: {e}")
         return [], []
 
+def recognize_faces_on_frame(frame, known_encodings, known_names):
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    face_locations = face_recognition.face_locations(rgb_frame)
+    if known_encodings:
+        face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+        for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+            matches = face_recognition.compare_faces(known_encodings, face_encoding, tolerance=0.6)
+            if True in matches:
+                name = known_names[matches.index(True)]
+                now = time.time()
+                last_time = last_sent.get(name, 0)
+                if now - last_time > COOLDOWN:
+                    face_img = frame[top:bottom, left:right].copy()
+                    send_detection_email(name, None, face_img)
+                    last_sent[name] = now
+            else:
+                name = "Unknown"
+            cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+    else:
+        for top, right, bottom, left in face_locations:
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+            cv2.putText(frame, "Unknown", (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+    return frame
+
 def recognize_faces(model_file='face_detection/face_training.pkl'):
     known_encodings, known_names = load_model(model_file)
     
@@ -37,31 +62,7 @@ def recognize_faces(model_file='face_detection/face_training.pkl'):
             print("Warning: Failed to capture frame from webcam. Retrying...")
             continue
         
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        
-        face_locations = face_recognition.face_locations(rgb_frame)
-        
-        if known_encodings:
-            face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
-            for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-                matches = face_recognition.compare_faces(known_encodings, face_encoding, tolerance=0.6)
-                if True in matches:
-                    name = known_names[matches.index(True)]
-                    # Email logic for recognized face
-                    now = time.time()
-                    last_time = last_sent.get(name, 0)
-                    if now - last_time > COOLDOWN:
-                        face_img = frame[top:bottom, left:right].copy()
-                        send_detection_email(name, None, face_img)
-                        last_sent[name] = now
-                else:
-                    name = "Unknown"
-                cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-        else:
-            for top, right, bottom, left in face_locations:
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-                cv2.putText(frame, "Unknown", (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+        frame = recognize_faces_on_frame(frame, known_encodings, known_names)
         
         cv2.imshow('Webcam Face Recognition', frame)
         

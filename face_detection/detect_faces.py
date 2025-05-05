@@ -1,6 +1,11 @@
 import face_recognition
 import pickle
 import cv2
+import time
+from mail.email_utils import send_detection_email
+
+COOLDOWN = 180  # seconds
+last_sent = {}
 
 def load_model(model_file='face_detection/face_training.pkl'):
     try:
@@ -43,6 +48,13 @@ def recognize_faces(model_file='face_detection/face_training.pkl'):
                 matches = face_recognition.compare_faces(known_encodings, face_encoding, tolerance=0.6)
                 if True in matches:
                     name = known_names[matches.index(True)]
+                    # Email logic for recognized face
+                    now = time.time()
+                    last_time = last_sent.get(name, 0)
+                    if now - last_time > COOLDOWN:
+                        face_img = frame[top:bottom, left:right].copy()
+                        send_detection_email(name, None, face_img)
+                        last_sent[name] = now
                 else:
                     name = "Unknown"
                 cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)

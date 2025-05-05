@@ -18,7 +18,7 @@ specified_objects = load_specified_objects()
 COOLDOWN = 180  # seconds
 last_sent = {}
 
-model = YOLO("object_detection/yolo12l.pt")
+model = YOLO("object_detection/yolo12n.pt")
 
 def detect_obj(vid_src=0):
     vid = cv2.VideoCapture(vid_src)

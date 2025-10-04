@@ -1,5 +1,5 @@
 import os
-import face_detection
+import face_recognition
 import pickle
 
 def train_model(dataset_dir='face_detection/dataset', model_file='face_detection/face_training.pkl'):
@@ -13,8 +13,8 @@ def train_model(dataset_dir='face_detection/dataset', model_file='face_detection
         for filename in os.listdir(person_dir):
             if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
                 image_path = os.path.join(person_dir, filename)
-                image = face_detection.load_image_file(image_path)
-                encodings = face_detection.face_encodings(image)
+                image = face_recognition.load_image_file(image_path)
+                encodings = face_recognition.face_encodings(image)
                 if encodings:
                     known_face_encodings.append(encodings[0])
                     known_face_names.append(person_name)
